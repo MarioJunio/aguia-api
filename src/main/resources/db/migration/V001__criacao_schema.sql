@@ -1,7 +1,16 @@
+create table estado (
+	id integer primary key,
+	nome varchar(75),
+	uf varchar(2),
+	ibge integer,
+	ddd varchar(50)
+);
+
 create table cidade (
-	id bigint primary key auto_increment,
+	id bigint primary key,
 	nome varchar(100) not null,
-	uf char(2) not null
+	uf char(2) not null,
+	ibge integer
 );
 
 create table endereco (
