@@ -21,10 +21,11 @@ public class UsuarioResource {
 	
 	@PostMapping()
 	public ResponseEntity<Usuario> salvar(@RequestBody @Valid Usuario usuario) {
+		System.out.println("[POST]; (/usuarios)");
 		System.out.println(usuario);
-		usuarioService.salvar(usuario);
 		
-		return ResponseEntity.created(null).body(usuario);
+		Usuario usuarioSalvo = usuarioService.salvar(usuario);
+		return ResponseEntity.created(null).body(usuarioSalvo);
 	}
 	
 }

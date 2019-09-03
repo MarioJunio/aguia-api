@@ -9,7 +9,7 @@ create table estado (
 create table cidade (
 	id bigint primary key,
 	nome varchar(100) not null,
-	uf char(2) not null,
+	estado_id integer,
 	ibge integer
 );
 

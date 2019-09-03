@@ -13,9 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -32,19 +34,22 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Usuario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
 	@Column
 	private String nome;
 	
+	@NotBlank
+	@Size(min = 11, max = 11)
 	@Column
 	private String telefone;
 	
+	@NotBlank
 	@Column
 	private String senha;
 	
@@ -59,6 +64,7 @@ public class Usuario implements Serializable {
 	@Column
 	private boolean instrutor;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "clube_id")
 	private Clube clube;
