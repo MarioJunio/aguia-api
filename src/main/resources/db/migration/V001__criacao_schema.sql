@@ -69,10 +69,10 @@ create table agendamento (
 create table solicitacao_conferencia (
 	id bigint primary key auto_increment,
 	usuario_id bigint not null,
-	instrutor_id bigint not null,
+	instrutor_id bigint,
 	baia_id bigint not null,
 	notificado boolean,
-	aceito boolean,
+	status varchar(15),
 	data_solicitacao datetime,
 	data_resposta datetime,
 	foreign key (usuario_id) references usuario(id),

@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,8 +37,9 @@ public class SolicitacaoConferencia implements Serializable {
 	@Column
 	private boolean notificado;
 
+	@Enumerated(EnumType.STRING)
 	@Column
-	private boolean aceito;
+	private StatusSolicitacaoConferencia status;
 
 	@Column(name = "data_solicitacao", columnDefinition = "TIMESTAMP")
 	private LocalDateTime dataSolicitacao;
