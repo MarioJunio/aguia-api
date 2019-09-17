@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,17 +45,18 @@ public class Agendamento implements Serializable {
 
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime inicio;
-	
+
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime fim;
-	
+
+	@Enumerated(EnumType.STRING)
 	@Column
-	private String status;
-	
+	private StatusAgendamento status;
+
 	@ManyToOne
 	@JoinColumn(name = "instrutor_id_aprovou")
 	private Usuario instrutorAprovou;
-	
+
 	@Column
 	private String observacao;
 
