@@ -19,11 +19,11 @@ public class ConferenciaService {
 	}
 
 	public Integer pontuacaoPorAgendamento(Long idAgendamento) {
-		return conferenciaRepository.pontuacaoPorAgendamento(idAgendamento);
+		 return conferenciaRepository.pontuacaoPorAgendamento(idAgendamento).orElse(0);
 	}
 
 	public int pontuacaoTotal(Long idUsuario) {
-		return conferenciaRepository.pontuacaoTotal(idUsuario);
+		return conferenciaRepository.pontuacaoTotal(idUsuario).orElse(0);
 	}
 
 }

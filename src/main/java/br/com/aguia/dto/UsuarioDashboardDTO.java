@@ -1,6 +1,5 @@
 package br.com.aguia.dto;
 
-import br.com.aguia.model.Agendamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class UsuarioDashboardDTO {
 	
-	private Agendamento agendamento;
-	private int pontuacaoParcial;
-	private int pontuacaoTotal;
+	private AgendamentoDashboardDTO agendamento;
+	private Integer pontuacaoAgendamento;
+	private Integer pontuacaoTotal;
 }

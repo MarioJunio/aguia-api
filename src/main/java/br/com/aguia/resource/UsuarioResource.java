@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.aguia.dto.AgendamentoDashboardDTO;
 import br.com.aguia.dto.UsuarioDashboardDTO;
 import br.com.aguia.model.Agendamento;
 import br.com.aguia.model.Usuario;
@@ -42,25 +43,38 @@ public class UsuarioResource {
 		return ResponseEntity.created(null).body(usuarioSalvo);
 	}
 
-	@GetMapping("/dashboard/{id}")
-	public ResponseEntity<UsuarioDashboardDTO> dashboard(@PathVariable Long id) {
-		System.out.printf("[POST]; (/usuarios/dashboard/%d\n)", id);
+	@GetMapping("/dashboard/{idUsuario}")
+	public ResponseEntity<UsuarioDashboardDTO> dashboard(@PathVariable Long idUsuario) {
+		System.out.printf("[GET]; (/usuarios/dashboard/%d)\n", idUsuario);
 		UsuarioDashboardDTO dashboardDTO = new UsuarioDashboardDTO();
 
-		Optional<Agendamento> agendamentoAtivo = agendamentoService.buscarAgendamentoAtivoPorUsuario(id);
+		Optional<Agendamento> agendamentoAtivo = agendamentoService.buscarAgendamentoAtivoPorUsuario(idUsuario);
 
 		// se existe algum agendamento ativo para este usuario
 		// sera buscado suas conferencias para calcular os pontos do agendamento
 		if (agendamentoAtivo.isPresent()) {
-			dashboardDTO.setAgendamento(agendamentoAtivo.get());
+
+			dashboardDTO.setAgendamento(new AgendamentoDashboardDTO(agendamentoAtivo.get()));
 			dashboardDTO
-					.setPontuacaoParcial(conferenciaService.pontuacaoPorAgendamento(agendamentoAtivo.get().getId()));
+					.setPontuacaoAgendamento(conferenciaService.pontuacaoPorAgendamento(agendamentoAtivo.get().getId()));
 
 		}
 
 		// busca a pontuacao total do usuario
-		dashboardDTO.setPontuacaoTotal(conferenciaService.pontuacaoTotal(id));
+		dashboardDTO.setPontuacaoTotal(conferenciaService.pontuacaoTotal(idUsuario));
 
+		return ResponseEntity.ok(dashboardDTO);
+	}
+	
+	@GetMapping("/{idUsuario}/pontuacoes/{idAgendamento}")
+	public ResponseEntity<UsuarioDashboardDTO> pontuacoes(@PathVariable Long idUsuario, @PathVariable Long idAgendamento) {
+		System.out.printf("[GET]; (/%d/pontuacoes/%d)\n", idUsuario, idAgendamento);
+		
+		UsuarioDashboardDTO dashboardDTO = new UsuarioDashboardDTO();
+		dashboardDTO.setAgendamento(new AgendamentoDashboardDTO(idAgendamento));
+		dashboardDTO.setPontuacaoAgendamento(conferenciaService.pontuacaoPorAgendamento(idAgendamento));
+		dashboardDTO.setPontuacaoTotal(conferenciaService.pontuacaoTotal(idUsuario));
+		
 		return ResponseEntity.ok(dashboardDTO);
 	}
 }

@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,10 +40,12 @@ public class Baia implements Serializable {
 	@Column
 	private String codigo;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "clube_id")
 	private Clube clube;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy =  "baia", fetch = FetchType.LAZY)
 	private List<Agendamento> agendamentos;
 }

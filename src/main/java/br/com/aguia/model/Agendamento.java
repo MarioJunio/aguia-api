@@ -7,12 +7,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -35,20 +39,26 @@ public class Agendamento implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@JsonIgnore
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "baia_id")
 	private Baia baia;
 
+	@NotNull
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime inicio;
 
+	@NotNull
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime fim;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column
 	private StatusAgendamento status;
