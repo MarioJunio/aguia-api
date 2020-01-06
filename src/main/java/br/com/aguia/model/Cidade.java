@@ -9,23 +9,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "cidade")
-@Getter
-@Setter
-@EqualsAndHashCode(of = "id")
-@ToString
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 public class Cidade implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	@EqualsAndHashCode.Include
 	@Id
 	private Long id;
 

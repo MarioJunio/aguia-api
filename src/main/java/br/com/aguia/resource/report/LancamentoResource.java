@@ -1,4 +1,4 @@
-package br.com.aguia.resource;
+package br.com.aguia.resource.report;
 
 import java.time.LocalDate;
 

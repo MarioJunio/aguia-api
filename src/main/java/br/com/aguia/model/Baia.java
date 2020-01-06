@@ -1,6 +1,7 @@
 package br.com.aguia.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,25 +15,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "baia")
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(of = "id")
-@ToString
 public class Baia implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -40,12 +35,10 @@ public class Baia implements Serializable {
 	@Column
 	private String codigo;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "clube_id")
 	private Clube clube;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy =  "baia", fetch = FetchType.LAZY)
-	private List<Agendamento> agendamentos;
+	private List<Agendamento> agendamentos = new ArrayList<>();
 }

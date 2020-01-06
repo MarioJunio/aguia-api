@@ -11,6 +11,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class AppConfiguration {
+	
+	private static final String dateFormat = "dd/MM/yyyy";
+    private static final String dateTimeFormat = "dd/MM/yyyy HH:mm:ss";
 
 	@Bean()
 	public LocaleResolver localeResolver() {

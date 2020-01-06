@@ -9,19 +9,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.aguia.dto.AgendamentoDTO;
 import br.com.aguia.model.Agendamento;
 import br.com.aguia.service.AgendamentoService;
 
 @RestController
 @RequestMapping("/agendamentos")
-public class AgendamentoResource {
+public class AgendamentoResource extends Resource<Agendamento, AgendamentoDTO> {
 
 	@Autowired
 	private AgendamentoService agendamentoService;
 
 	@PostMapping
-	public ResponseEntity<Agendamento> salvar(@Valid @RequestBody Agendamento agendamento) {
-		agendamento = agendamentoService.salvar(agendamento);
-		return ResponseEntity.ok(agendamento);
+	public ResponseEntity<AgendamentoDTO> novo(@Valid @RequestBody Agendamento agendamento) {
+		AgendamentoDTO agendamentoDto = toDto(agendamentoService.novo(agendamento));
+		return ResponseEntity.created(location(String.valueOf(agendamentoDto.getId()))).body(agendamentoDto);
 	}
 }

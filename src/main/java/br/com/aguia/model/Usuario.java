@@ -21,24 +21,19 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "usuario")
-@Getter
-@Setter
-@EqualsAndHashCode(of = "id")
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Usuario implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -72,6 +67,7 @@ public class Usuario implements Serializable {
 	@JoinColumn(name = "clube_id")
 	private Clube clube;
 
+	@JsonIgnoreProperties({ "usuario" })
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private List<Agendamento> agendamentos;
 }

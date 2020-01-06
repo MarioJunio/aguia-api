@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.aguia.model.Agendamento;
+import br.com.aguia.model.StatusAgendamento;
 import br.com.aguia.repository.IAgendamentoRepository;
 
 @Service
@@ -22,7 +23,8 @@ public class AgendamentoService {
 	}
 
 	@Transactional
-	public Agendamento salvar(Agendamento agendamento) {
+	public Agendamento novo(Agendamento agendamento) {
+		agendamento.setStatus(StatusAgendamento.PENDENTE);
 		return agendamentoRepository.save(agendamento);
 	}
 }

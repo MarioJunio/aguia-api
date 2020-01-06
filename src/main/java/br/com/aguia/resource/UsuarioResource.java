@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.aguia.dto.AgendamentoDashboardDTO;
+import br.com.aguia.dto.AgendamentoDTO;
+import br.com.aguia.dto.UsuarioDTO;
 import br.com.aguia.dto.UsuarioDashboardDTO;
 import br.com.aguia.model.Agendamento;
 import br.com.aguia.model.Usuario;
@@ -23,7 +24,7 @@ import br.com.aguia.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioResource {
+public class UsuarioResource extends Resource<Usuario, UsuarioDTO> {
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -35,17 +36,17 @@ public class UsuarioResource {
 	private ConferenciaService conferenciaService;
 
 	@PostMapping()
-	public ResponseEntity<Usuario> salvar(@RequestBody @Valid Usuario usuario) {
-		System.out.println("[POST]; (/usuarios)");
-		System.out.println(usuario);
+	public ResponseEntity<UsuarioDTO> salvar(@RequestBody @Valid Usuario usuario) {
+		System.out.println("[POST] (/usuarios)");
+		System.out.printf("body: %s", usuario);
 
-		Usuario usuarioSalvo = usuarioService.salvar(usuario);
-		return ResponseEntity.created(null).body(usuarioSalvo);
+		UsuarioDTO usuarioDto = toDto(usuarioService.salvar(usuario));
+		return ResponseEntity.created(location(String.valueOf(usuarioDto.getId()))).body(usuarioDto);
 	}
 
-	@GetMapping("/dashboard/{idUsuario}")
+	@GetMapping("/{idUsuario}/dashboard")
 	public ResponseEntity<UsuarioDashboardDTO> dashboard(@PathVariable Long idUsuario) {
-		System.out.printf("[GET]; (/usuarios/dashboard/%d)\n", idUsuario);
+		System.out.printf("[GET] (/usuarios/%d/dashboard)\n", idUsuario);
 		UsuarioDashboardDTO dashboardDTO = new UsuarioDashboardDTO();
 
 		Optional<Agendamento> agendamentoAtivo = agendamentoService.buscarAgendamentoAtivoPorUsuario(idUsuario);
@@ -53,11 +54,10 @@ public class UsuarioResource {
 		// se existe algum agendamento ativo para este usuario
 		// sera buscado suas conferencias para calcular os pontos do agendamento
 		if (agendamentoAtivo.isPresent()) {
+			AgendamentoDTO agendamentoDTO = getMapper().map(agendamentoAtivo.get(), AgendamentoDTO.class);
 
-			dashboardDTO.setAgendamento(new AgendamentoDashboardDTO(agendamentoAtivo.get()));
-			dashboardDTO
-					.setPontuacaoAgendamento(conferenciaService.pontuacaoPorAgendamento(agendamentoAtivo.get().getId()));
-
+			dashboardDTO.setAgendamento(agendamentoDTO);
+			dashboardDTO.setPontuacaoAgendamento(conferenciaService.pontuacaoPorAgendamento(agendamentoAtivo.get().getId()));
 		}
 
 		// busca a pontuacao total do usuario
@@ -65,16 +65,16 @@ public class UsuarioResource {
 
 		return ResponseEntity.ok(dashboardDTO);
 	}
-	
+
 	@GetMapping("/{idUsuario}/pontuacoes/{idAgendamento}")
 	public ResponseEntity<UsuarioDashboardDTO> pontuacoes(@PathVariable Long idUsuario, @PathVariable Long idAgendamento) {
 		System.out.printf("[GET]; (/%d/pontuacoes/%d)\n", idUsuario, idAgendamento);
-		
 		UsuarioDashboardDTO dashboardDTO = new UsuarioDashboardDTO();
-		dashboardDTO.setAgendamento(new AgendamentoDashboardDTO(idAgendamento));
+		
+		dashboardDTO.setAgendamento(new AgendamentoDTO(idAgendamento));
 		dashboardDTO.setPontuacaoAgendamento(conferenciaService.pontuacaoPorAgendamento(idAgendamento));
 		dashboardDTO.setPontuacaoTotal(conferenciaService.pontuacaoTotal(idUsuario));
-		
+
 		return ResponseEntity.ok(dashboardDTO);
 	}
 }

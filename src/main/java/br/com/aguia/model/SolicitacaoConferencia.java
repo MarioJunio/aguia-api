@@ -14,10 +14,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 @Entity
 @Table(name = "solicitacao_conferencia")
+@Data
 public class SolicitacaoConferencia implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,7 +41,7 @@ public class SolicitacaoConferencia implements Serializable {
 	@JoinColumn(name = "baia_id")
 	private Baia baia;
 
-	@Column
+	@Column(name = "instrutor_notificado")
 	private boolean notificado;
 
 	@Enumerated(EnumType.STRING)

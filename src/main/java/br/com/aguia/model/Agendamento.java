@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,32 +15,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "agendamento")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(of = "id")
-@ToString
+@Data
 public class Agendamento implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonIgnore
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
@@ -50,15 +42,16 @@ public class Agendamento implements Serializable {
 	@JoinColumn(name = "baia_id")
 	private Baia baia;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	@NotNull
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime inicio;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	@NotNull
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime fim;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column
 	private StatusAgendamento status;
@@ -69,5 +62,11 @@ public class Agendamento implements Serializable {
 
 	@Column
 	private String observacao;
+
+	@Column(name = "instrutor_notificado")
+	private boolean instrutorNotificado;
+
+	@Column(name = "usuario_notificado")
+	private boolean usuarioNotificado;
 
 }

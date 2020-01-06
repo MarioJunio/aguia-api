@@ -61,6 +61,8 @@ create table agendamento (
 	status varchar(15) not null,
 	instrutor_id_aprovou bigint,
 	observacao text,
+	instrutor_notificado boolean,
+	usuario_notificado boolean,
 	foreign key (usuario_id) references usuario(id),
 	foreign key (baia_id) references baia(id),
 	foreign key (instrutor_id_aprovou) references usuario(id)
@@ -71,7 +73,7 @@ create table solicitacao_conferencia (
 	usuario_id bigint not null,
 	instrutor_id bigint,
 	baia_id bigint not null,
-	notificado boolean,
+	instrutor_notificado boolean,
 	status varchar(15),
 	data_solicitacao datetime,
 	data_resposta datetime,

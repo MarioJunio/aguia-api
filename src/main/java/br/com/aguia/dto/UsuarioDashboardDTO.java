@@ -1,19 +1,13 @@
 package br.com.aguia.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
 public class UsuarioDashboardDTO {
 	
-	private AgendamentoDashboardDTO agendamento;
+	private AgendamentoDTO agendamento;
 	private Integer pontuacaoAgendamento;
 	private Integer pontuacaoTotal;
 }
